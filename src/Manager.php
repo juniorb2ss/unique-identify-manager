@@ -6,7 +6,7 @@ use UniqueIdentifyManager\Exceptions\StorageKeyDoesNotExistsException;
 
 class Manager
 {
-    const DEVICE_KEY_IDENTIFICATION_NAME = 'customer:%s';
+    const DEVICE_KEY_IDENTIFICATION_NAME = 'device:%s';
     const CUSTOMER_KEY_IDENTIFICATION_NAME = 'customer:%s';
 
     /**
