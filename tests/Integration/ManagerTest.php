@@ -10,6 +10,9 @@ use UniqueIdentifyManager\Manager;
 use UniqueIdentifyManager\Storage;
 use UniqueIdentifyManager\Tests\TestCase;
 
+/**
+ * @group third-party
+ */
 class ManagerTest extends TestCase
 {
     protected function setUp(): void
