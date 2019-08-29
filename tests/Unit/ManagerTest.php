@@ -30,7 +30,7 @@ class ManagerTest extends TestCase
         $client
             ->get(
                 sprintf(
-                    Manager::DEVICE_KEY_IDENTIFICATION_NAME,
+                    Manager::CUSTOMER_KEY_IDENTIFICATION_NAME,
                     null
                 )
             )
