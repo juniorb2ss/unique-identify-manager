@@ -16,7 +16,7 @@ class ManagerTest extends TestCase
     {
         $this->redis = new Client(
             [
-                'tcp://localhost'
+                'tcp://redis'
             ]
         );
 
