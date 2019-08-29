@@ -38,8 +38,8 @@ class Storage
      * @param  string  $value
      * @return bool
      */
-    public function set(string $key, string $value): bool
+    public function set(string $key, string $value): void
     {
-        return $this->client->set($key, $value);
+        $this->client->set($key, $value);
     }
 }
