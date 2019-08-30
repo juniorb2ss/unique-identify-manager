@@ -1,14 +1,14 @@
 <?php
 
-namespace UniqueIdentifyManager\Tests\Integration;
+namespace UniqueIdentityManager\Tests\Integration;
 
 use Predis\Client;
 use Predis\ClientInterface;
 use Ramsey\Uuid\Uuid;
-use UniqueIdentifyManager\IdentifyGenerator;
-use UniqueIdentifyManager\Manager;
-use UniqueIdentifyManager\Storage;
-use UniqueIdentifyManager\Tests\TestCase;
+use UniqueIdentityManager\IdentifyGenerator;
+use UniqueIdentityManager\Manager;
+use UniqueIdentityManager\Storage;
+use UniqueIdentityManager\Tests\TestCase;
 
 /**
  * @group third-party
@@ -19,7 +19,7 @@ class ManagerTest extends TestCase
     {
         $this->redis = new Client(
             [
-                'tcp://redis'
+                'tcp://localhost'
             ]
         );
 

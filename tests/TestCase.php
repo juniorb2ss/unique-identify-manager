@@ -1,6 +1,6 @@
 <?php
 
-namespace UniqueIdentifyManager\Tests;
+namespace UniqueIdentityManager\Tests;
 
 use PHPUnit\Framework\TestCase as BaseTestCase;
 

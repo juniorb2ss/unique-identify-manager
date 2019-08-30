@@ -1,5 +1,5 @@
 {
-  "name": "juniorb2ss/unique-identify-manager",
+  "name": "juniorb2ss/unique-identity-manager",
   "description": "Unique Identify Manager",
   "keywords": [],
   "type": "library",
@@ -11,12 +11,12 @@
   },
   "autoload": {
     "psr-4": {
-      "UniqueIdentifyManager\\": "src"
+      "UniqueIdentityManager\\": "src"
     }
   },
   "autoload-dev": {
     "psr-4": {
-      "UniqueIdentifyManager\\Tests\\": "tests"
+      "UniqueIdentityManager\\Tests\\": "tests"
     }
   },
   "require-dev": {

@@ -1,8 +1,8 @@
 <?php
 
-namespace UniqueIdentifyManager;
+namespace UniqueIdentityManager;
 
-use UniqueIdentifyManager\Exceptions\StorageKeyDoesNotExistsException;
+use UniqueIdentityManager\Exceptions\StorageKeyDoesNotExistsException;
 
 class Manager
 {

@@ -1,6 +1,6 @@
 <?php
 
-namespace UniqueIdentifyManager\Exceptions;
+namespace UniqueIdentityManager\Exceptions;
 
 use Exception;
 

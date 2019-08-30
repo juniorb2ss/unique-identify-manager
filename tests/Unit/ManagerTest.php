@@ -1,14 +1,14 @@
 <?php
 
-namespace UniqueIdentifyManager\Tests\Unit;
+namespace UniqueIdentityManager\Tests\Unit;
 
 use Predis\ClientInterface;
 use Ramsey\Uuid\Uuid;
-use UniqueIdentifyManager\Exceptions\StorageKeyDoesNotExistsException;
-use UniqueIdentifyManager\IdentifyGenerator;
-use UniqueIdentifyManager\Manager;
-use UniqueIdentifyManager\Storage;
-use UniqueIdentifyManager\Tests\TestCase;
+use UniqueIdentityManager\Exceptions\StorageKeyDoesNotExistsException;
+use UniqueIdentityManager\IdentifyGenerator;
+use UniqueIdentityManager\Manager;
+use UniqueIdentityManager\Storage;
+use UniqueIdentityManager\Tests\TestCase;
 
 class ManagerTest extends TestCase
 {

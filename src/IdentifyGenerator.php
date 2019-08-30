@@ -1,6 +1,6 @@
 <?php
 
-namespace UniqueIdentifyManager;
+namespace UniqueIdentityManager;
 
 use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;

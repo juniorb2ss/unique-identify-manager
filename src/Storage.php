@@ -1,9 +1,9 @@
 <?php
 
-namespace UniqueIdentifyManager;
+namespace UniqueIdentityManager;
 
 use Predis\ClientInterface;
-use UniqueIdentifyManager\Exceptions\StorageKeyDoesNotExistsException;
+use UniqueIdentityManager\Exceptions\StorageKeyDoesNotExistsException;
 
 class Storage
 {
