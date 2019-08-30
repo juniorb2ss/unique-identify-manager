@@ -15,11 +15,11 @@ class Manager
     private $storage;
 
     /**
-     * @var IdentifyGenerator
+     * @var IdentityGenerator
      */
     private $identifyGenerator;
 
-    public function __construct(Storage $storage, IdentifyGenerator $identifyGenerator)
+    public function __construct(Storage $storage, IdentityGenerator $identifyGenerator)
     {
         $this->storage = $storage;
         $this->identifyGenerator = $identifyGenerator;

@@ -5,7 +5,7 @@ namespace UniqueIdentityManager;
 use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
 
-class IdentifyGenerator
+class IdentityGenerator
 {
     public function generate(): UuidInterface
     {

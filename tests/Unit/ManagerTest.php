@@ -5,7 +5,7 @@ namespace UniqueIdentityManager\Tests\Unit;
 use Predis\ClientInterface;
 use Ramsey\Uuid\Uuid;
 use UniqueIdentityManager\Exceptions\StorageKeyDoesNotExistsException;
-use UniqueIdentityManager\IdentifyGenerator;
+use UniqueIdentityManager\IdentityGenerator;
 use UniqueIdentityManager\Manager;
 use UniqueIdentityManager\Storage;
 use UniqueIdentityManager\Tests\TestCase;
@@ -16,14 +16,14 @@ class ManagerTest extends TestCase
     {
         $deviceUuid = (string) Uuid::uuid4();
 
-        $identifyGenerator = $this->prophesize(IdentifyGenerator::class);
+        $identifyGenerator = $this->prophesize(IdentityGenerator::class);
         $identifyGenerator
             ->generate()
             ->shouldBeCalled()
             ->willReturn(Uuid::fromString('2da90be1-d1de-429f-b5f9-b9f6fbafb8e0'));
 
 
-        /** @var IdentifyGenerator $identifyGenerator */
+        /** @var IdentityGenerator $identifyGenerator */
         $identifyGenerator = $identifyGenerator->reveal();
 
         $client = $this->prophesize(ClientInterface::class);
@@ -81,14 +81,14 @@ class ManagerTest extends TestCase
         $customerUuid = '1d60b5e1-f5cb-43cc-96f3-7032c606ead5';
         $expectedIdentifyKey = '2da90be1-d1de-429f-b5f9-b9f6fbafb8e0';
 
-        $identifyGenerator = $this->prophesize(IdentifyGenerator::class);
+        $identifyGenerator = $this->prophesize(IdentityGenerator::class);
         $identifyGenerator
             ->generate()
             ->shouldBeCalled()
             ->willReturn(Uuid::fromString('2da90be1-d1de-429f-b5f9-b9f6fbafb8e0'));
 
 
-        /** @var IdentifyGenerator $identifyGenerator */
+        /** @var IdentityGenerator $identifyGenerator */
         $identifyGenerator = $identifyGenerator->reveal();
 
         $client = $this->prophesize(ClientInterface::class);
@@ -158,9 +158,9 @@ class ManagerTest extends TestCase
         $customerUuid = '1d60b5e1-f5cb-43cc-96f3-7032c606ead5';
         $expectedIdentifyKey = '2da90be1-d1de-429f-b5f9-b9f6fbafb8e0';
 
-        $identifyGenerator = $this->prophesize(IdentifyGenerator::class);
+        $identifyGenerator = $this->prophesize(IdentityGenerator::class);
 
-        /** @var IdentifyGenerator $identifyGenerator */
+        /** @var IdentityGenerator $identifyGenerator */
         $identifyGenerator = $identifyGenerator->reveal();
 
         $client = $this->prophesize(ClientInterface::class);
@@ -221,9 +221,9 @@ class ManagerTest extends TestCase
         $customerUuid = '1d60b5e1-f5cb-43cc-96f3-7032c606ead5';
         $expectedIdentifyKey = '2da90be1-d1de-429f-b5f9-b9f6fbafb8e0';
 
-        $identifyGenerator = $this->prophesize(IdentifyGenerator::class);
+        $identifyGenerator = $this->prophesize(IdentityGenerator::class);
 
-        /** @var IdentifyGenerator $identifyGenerator */
+        /** @var IdentityGenerator $identifyGenerator */
         $identifyGenerator = $identifyGenerator->reveal();
 
         $client = $this->prophesize(ClientInterface::class);
