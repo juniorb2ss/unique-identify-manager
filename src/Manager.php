@@ -17,12 +17,12 @@ class Manager
     /**
      * @var IdentityGenerator
      */
-    private $identifyGenerator;
+    private $identityGenerator;
 
-    public function __construct(Storage $storage, IdentityGenerator $identifyGenerator)
+    public function __construct(Storage $storage, IdentityGenerator $identityGenerator)
     {
         $this->storage = $storage;
-        $this->identifyGenerator = $identifyGenerator;
+        $this->identityGenerator = $identityGenerator;
     }
 
     /**
@@ -32,33 +32,33 @@ class Manager
      */
     public function identify(string $deviceUuid, ?string $customerUuid = null): string
     {
-        $identifyKey = $this->getIdentifyByCustomerUuid($customerUuid);
+        $identityKey = $this->getIdentityByCustomerUuid($customerUuid);
 
-        if($identifyKey) {
-            return $identifyKey;
+        if($identityKey) {
+            return $identityKey;
         }
 
-        $identifyKey = $this->getIdentifyByDeviceUuid($deviceUuid);
+        $identityKey = $this->getIdentityByDeviceUuid($deviceUuid);
 
-        if(!$identifyKey) {
-            $identifyKey = $this->createDeviceIdentifyKey($deviceUuid);
+        if(!$identityKey) {
+            $identityKey = $this->createDeviceIdentityKey($deviceUuid);
         }
 
         if($customerUuid) {
-            $this->updateCustomerIdentifyKey($customerUuid, $identifyKey);
+            $this->updateCustomerIdentityKey($customerUuid, $identityKey);
         }
 
-        return $identifyKey;
+        return $identityKey;
     }
 
     /**
      * @param  string|null  $customerUuid
      * @return string|null
      */
-    private function getIdentifyByCustomerUuid(?string $customerUuid): ?string
+    private function getIdentityByCustomerUuid(?string $customerUuid): ?string
     {
         try {
-            $identify = $this
+            $identity = $this
                 ->storage
                 ->get(
                     sprintf(
@@ -67,7 +67,7 @@ class Manager
                     )
                 );
 
-            return $identify;
+            return $identity;
         } catch (StorageKeyDoesNotExistsException $exception) {}
 
         return null;
@@ -77,10 +77,10 @@ class Manager
      * @param  string|null  $deviceUuid
      * @return string|null
      */
-    private function getIdentifyByDeviceUuid(string $deviceUuid): ?string
+    private function getIdentityByDeviceUuid(string $deviceUuid): ?string
     {
         try {
-            $identify = $this
+            $identity = $this
                 ->storage
                 ->get(
                     sprintf(
@@ -89,7 +89,7 @@ class Manager
                     )
                 );
 
-            return $identify;
+            return $identity;
         } catch (StorageKeyDoesNotExistsException $exception) {}
 
         return null;
@@ -99,9 +99,9 @@ class Manager
      * @param  string  $deviceUuid
      * @return string
      */
-    private function createDeviceIdentifyKey(string $deviceUuid): string
+    private function createDeviceIdentityKey(string $deviceUuid): string
     {
-        $identifyKey = $this->identifyGenerator->generate();
+        $identityKey = $this->identityGenerator->generate();
 
         $this
             ->storage
@@ -110,17 +110,17 @@ class Manager
                     self::DEVICE_KEY_IDENTIFICATION_NAME,
                     $deviceUuid
                 ),
-                $identifyKey
+                $identityKey
             );
 
-        return $identifyKey;
+        return $identityKey;
     }
 
     /**
      * @param  string  $customerUuid
-     * @param  string  $identifyKey
+     * @param  string  $identityKey
      */
-    private function updateCustomerIdentifyKey(string $customerUuid, string $identifyKey): void
+    private function updateCustomerIdentityKey(string $customerUuid, string $identityKey): void
     {
         $this
             ->storage
@@ -129,7 +129,7 @@ class Manager
                     self::CUSTOMER_KEY_IDENTIFICATION_NAME,
                     $customerUuid
                 ),
-                $identifyKey
+                $identityKey
             );
     }
 }

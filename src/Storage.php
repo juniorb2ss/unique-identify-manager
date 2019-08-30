@@ -18,13 +18,13 @@ class Storage
     }
 
     /**
-     * @param  string  $identify
+     * @param  string  $identity
      * @return string|null
      * @throws StorageKeyDoesNotExistsException
      */
-    public function get(string $identify): ?string
+    public function get(string $identity): ?string
     {
-        $value = $this->client->get($identify);
+        $value = $this->client->get($identity);
 
         if(!$value) {
             throw new StorageKeyDoesNotExistsException();

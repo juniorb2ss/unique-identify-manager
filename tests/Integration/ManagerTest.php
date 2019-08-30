@@ -26,74 +26,74 @@ class ManagerTest extends TestCase
         parent::setUp();
     }
 
-    public function testGeneratingIdentifyKeyWithoutCustomerUuid(): void
+    public function testGeneratingidentityKeyWithoutCustomerUuid(): void
     {
         $deviceUuid = (string) Uuid::uuid1();
 
-        $identifyGenerator = $this->prophesize(IdentityGenerator::class);
-        $identifyGenerator
+        $identityGenerator = $this->prophesize(IdentityGenerator::class);
+        $identityGenerator
             ->generate()
             ->shouldBeCalled()
             ->willReturn(Uuid::uuid1());
 
 
-        /** @var IdentityGenerator $identifyGenerator */
-        $identifyGenerator = $identifyGenerator->reveal();
+        /** @var IdentityGenerator $identityGenerator */
+        $identityGenerator = $identityGenerator->reveal();
 
         $storage = new Storage($this->redis);
-        $manager = new Manager($storage, $identifyGenerator);
+        $manager = new Manager($storage, $identityGenerator);
 
         // Cenario
         // Não existe customerUuuid ainda, pois é um visitante, e o device não contém identificador unico ainda
         // por isso é esperado que se crie um identificador unico para esse device
-        $identifyKey = $manager->identify(
+        $identityKey = $manager->identify(
             $deviceUuid,
             null
         );
 
-        $this->assertSame((string) $identifyGenerator->generate(), $identifyKey);
+        $this->assertSame((string) $identityGenerator->generate(), $identityKey);
     }
 
-    public function testGeneratingIdentifyKeyWithCustomerUuidButCustomerDoesNotHaveIdentifyKey(): void
+    public function testGeneratingidentityKeyWithCustomerUuidButCustomerDoesNotHaveidentityKey(): void
     {
         $deviceUuid = (string) Uuid::uuid1();
         $customerUuid = (string) Uuid::uuid1();
-        $expectedIdentifyKey = (string) Uuid::uuid1();
+        $expectedidentityKey = (string) Uuid::uuid1();
 
-        $identifyGenerator = $this->prophesize(IdentityGenerator::class);
-        $identifyGenerator
+        $identityGenerator = $this->prophesize(IdentityGenerator::class);
+        $identityGenerator
             ->generate()
             ->shouldBeCalled()
-            ->willReturn(Uuid::fromString($expectedIdentifyKey));
+            ->willReturn(Uuid::fromString($expectedidentityKey));
 
-        /** @var IdentityGenerator $identifyGenerator */
-        $identifyGenerator = $identifyGenerator->reveal();
+        /** @var IdentityGenerator $identityGenerator */
+        $identityGenerator = $identityGenerator->reveal();
 
         $storage = new Storage($this->redis);
-        $manager = new Manager($storage, $identifyGenerator);
+        $manager = new Manager($storage, $identityGenerator);
 
         // Cenario:
         // o device e o customer nao possuem nenhum identificador unico antes criado
         // por isso é esperado que se crie um identificador unico para o device
         // e atualize o customer com esse identificador unico
-        $identifyKey = $manager->identify(
+        $identityKey = $manager->identify(
             $deviceUuid,
             $customerUuid
         );
 
-        $this->assertSame($expectedIdentifyKey, $identifyKey);
+        $this->assertSame($expectedidentityKey, $identityKey);
     }
 
-    public function testGeneratingIdentifyKeyWithDeviceUuidAndCustomerDoesNotHaveIdentifyKey(): void
+    public function testGeneratingidentityKeyWithDeviceUuidAndCustomerDoesNotHaveidentityKey(): void
     {
         $deviceUuid = (string) Uuid::uuid1();
         $customerUuid = (string) Uuid::uuid1();
-        $expectedIdentifyKey = (string) Uuid::uuid1();
+        $expectedidentityKey = (string) Uuid::uuid1();
 
-        $identifyGenerator = $this->prophesize(IdentityGenerator::class);
+        $identityGenerator = $this->prophesize(IdentityGenerator::class);
 
-        /** @var IdentityGenerator $identifyGenerator */
-        $identifyGenerator = $identifyGenerator->reveal();
+        /** @var IdentityGenerator $identityGenerator */
+        $identityGenerator = $identityGenerator->reveal();
 
         /** @var ClientInterface $redis */
         $redis = $this->redis;
@@ -103,11 +103,11 @@ class ManagerTest extends TestCase
                     Manager::DEVICE_KEY_IDENTIFICATION_NAME,
                     $deviceUuid
                 ),
-                $expectedIdentifyKey
+                $expectedidentityKey
             );
 
         $storage = new Storage($redis);
-        $manager = new Manager($storage, $identifyGenerator);
+        $manager = new Manager($storage, $identityGenerator);
 
         // Cenario:
         // O device já possui um identificador, e o customer criou uma conta nova
@@ -115,24 +115,24 @@ class ManagerTest extends TestCase
         // por isso é esperado que seja retornado o identificador unico do device, para manter a mesma experiencia
         // também é esperado atualizar o identificador do customer, para que os próximos acessos nesse device
         // ou em outros, mantenha a mesma experiencia.
-        $identifyKey = $manager->identify(
+        $identityKey = $manager->identify(
             $deviceUuid,
             $customerUuid
         );
 
-        $this->assertSame($expectedIdentifyKey, $identifyKey);
+        $this->assertSame($expectedidentityKey, $identityKey);
     }
 
-    public function testGeneratingIdentifyKeyWithCustomerUuidAndCustomerAlreadyHasIdentifyKey(): void
+    public function testGeneratingidentityKeyWithCustomerUuidAndCustomerAlreadyHasidentityKey(): void
     {
         $deviceUuid = (string) Uuid::uuid1();
         $customerUuid = (string) Uuid::uuid1();
-        $expectedIdentifyKey = (string) Uuid::uuid1();
+        $expectedidentityKey = (string) Uuid::uuid1();
 
-        $identifyGenerator = $this->prophesize(IdentityGenerator::class);
+        $identityGenerator = $this->prophesize(IdentityGenerator::class);
 
-        /** @var IdentityGenerator $identifyGenerator */
-        $identifyGenerator = $identifyGenerator->reveal();
+        /** @var IdentityGenerator $identityGenerator */
+        $identityGenerator = $identityGenerator->reveal();
 
         /** @var ClientInterface $redis */
         $redis = $this->redis;
@@ -142,20 +142,20 @@ class ManagerTest extends TestCase
                     Manager::CUSTOMER_KEY_IDENTIFICATION_NAME,
                     $customerUuid
                 ),
-                $expectedIdentifyKey
+                $expectedidentityKey
             );
 
         $storage = new Storage($redis);
-        $manager = new Manager($storage, $identifyGenerator);
+        $manager = new Manager($storage, $identityGenerator);
 
         // Cenário:
         // Customer já contém outro identificador, possívelmente de outro computador
         // a primeira verificação deverá ser pelo uuid do customer
-        $identifyKey = $manager->identify(
+        $identityKey = $manager->identify(
             $deviceUuid,
             $customerUuid
         );
 
-        $this->assertSame($expectedIdentifyKey, $identifyKey);
+        $this->assertSame($expectedidentityKey, $identityKey);
     }
 }

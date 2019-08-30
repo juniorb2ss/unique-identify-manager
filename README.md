@@ -1,1 +1,1 @@
-# unique-identify-manager
+# unique-identity-manager
