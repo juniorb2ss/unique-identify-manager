@@ -103,13 +103,15 @@ class Manager
     {
         $identifyKey = $this->identifyGenerator->generate();
 
-        $this->storage->set(
-            sprintf(
-                self::DEVICE_KEY_IDENTIFICATION_NAME,
-                $deviceUuid
-            ),
-            $identifyKey
-        );
+        $this
+            ->storage
+            ->set(
+                sprintf(
+                    self::DEVICE_KEY_IDENTIFICATION_NAME,
+                    $deviceUuid
+                ),
+                $identifyKey
+            );
 
         return $identifyKey;
     }
@@ -120,12 +122,14 @@ class Manager
      */
     private function updateCustomerIdentifyKey(string $customerUuid, string $identifyKey): void
     {
-        $this->storage->set(
-            sprintf(
-                self::CUSTOMER_KEY_IDENTIFICATION_NAME,
-                $customerUuid
-            ),
-            $identifyKey
-        );
+        $this
+            ->storage
+            ->set(
+                sprintf(
+                    self::CUSTOMER_KEY_IDENTIFICATION_NAME,
+                    $customerUuid
+                ),
+                $identifyKey
+            );
     }
 }
