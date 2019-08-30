@@ -28,13 +28,13 @@ class ManagerTest extends TestCase
 
     public function testGeneratingIdentifyKeyWithoutCustomerUuid(): void
     {
-        $deviceUuid = (string) Uuid::uuid4();
+        $deviceUuid = (string) Uuid::uuid1();
 
         $identifyGenerator = $this->prophesize(IdentityGenerator::class);
         $identifyGenerator
             ->generate()
             ->shouldBeCalled()
-            ->willReturn(Uuid::uuid4());
+            ->willReturn(Uuid::uuid1());
 
 
         /** @var IdentityGenerator $identifyGenerator */
@@ -56,9 +56,9 @@ class ManagerTest extends TestCase
 
     public function testGeneratingIdentifyKeyWithCustomerUuidButCustomerDoesNotHaveIdentifyKey(): void
     {
-        $deviceUuid = (string) Uuid::uuid4();
-        $customerUuid = (string) Uuid::uuid4();
-        $expectedIdentifyKey = (string) Uuid::uuid4();
+        $deviceUuid = (string) Uuid::uuid1();
+        $customerUuid = (string) Uuid::uuid1();
+        $expectedIdentifyKey = (string) Uuid::uuid1();
 
         $identifyGenerator = $this->prophesize(IdentityGenerator::class);
         $identifyGenerator
@@ -86,9 +86,9 @@ class ManagerTest extends TestCase
 
     public function testGeneratingIdentifyKeyWithDeviceUuidAndCustomerDoesNotHaveIdentifyKey(): void
     {
-        $deviceUuid = (string) Uuid::uuid4();
-        $customerUuid = (string) Uuid::uuid4();
-        $expectedIdentifyKey = (string) Uuid::uuid4();
+        $deviceUuid = (string) Uuid::uuid1();
+        $customerUuid = (string) Uuid::uuid1();
+        $expectedIdentifyKey = (string) Uuid::uuid1();
 
         $identifyGenerator = $this->prophesize(IdentityGenerator::class);
 
@@ -125,9 +125,9 @@ class ManagerTest extends TestCase
 
     public function testGeneratingIdentifyKeyWithCustomerUuidAndCustomerAlreadyHasIdentifyKey(): void
     {
-        $deviceUuid = (string) Uuid::uuid4();
-        $customerUuid = (string) Uuid::uuid4();
-        $expectedIdentifyKey = (string) Uuid::uuid4();
+        $deviceUuid = (string) Uuid::uuid1();
+        $customerUuid = (string) Uuid::uuid1();
+        $expectedIdentifyKey = (string) Uuid::uuid1();
 
         $identifyGenerator = $this->prophesize(IdentityGenerator::class);
 

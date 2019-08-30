@@ -14,7 +14,7 @@ class ManagerTest extends TestCase
 {
     public function testGeneratingIdentifyKeyWithoutCustomerUuid(): void
     {
-        $deviceUuid = (string) Uuid::uuid4();
+        $deviceUuid = (string) Uuid::uuid1();
 
         $identifyGenerator = $this->prophesize(IdentityGenerator::class);
         $identifyGenerator

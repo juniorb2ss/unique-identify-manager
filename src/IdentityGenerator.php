@@ -9,6 +9,6 @@ class IdentityGenerator
 {
     public function generate(): UuidInterface
     {
-        return Uuid::uuid4();
+        return Uuid::uuid1();
     }
 }
