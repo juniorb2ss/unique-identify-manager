@@ -176,10 +176,12 @@ class ManagerTest extends TestCase
 
         $this->assertInstanceOf(NewDeviceIdentityKeyEvent::class, $newDeviceIdentityKeyEvent);
         $this->assertSame($newDeviceIdentityKeyEvent->getIdentityKey(), (string) $identityGenerator->generate());
+        $this->assertEmpty($newDeviceIdentityKeyEvent->getCustomAttributes());
 
         $this->assertInstanceOf(UpdateCustomerIdentityKeyEvent::class, $updateCustomerIdentityKeyEvent);
         $this->assertSame($customerUuid, $updateCustomerIdentityKeyEvent->getCustomerUuid());
         $this->assertSame((string) $identityGenerator->generate(), $updateCustomerIdentityKeyEvent->getIdentityKey());
+        $this->assertEmpty($updateCustomerIdentityKeyEvent->getCustomAttributes());
     }
 
     public function testGeneratingIdentityKeyWithDeviceUuidAndCustomerDoesNotHaveIdentityKey(): void
@@ -253,6 +255,7 @@ class ManagerTest extends TestCase
         $this->assertInstanceOf(UpdateCustomerIdentityKeyEvent::class, $updateCustomerIdentityKeyEvent);
         $this->assertSame($updateCustomerIdentityKeyEvent->getIdentityKey(), $expectedIdentityKey);
         $this->assertSame($updateCustomerIdentityKeyEvent->getCustomerUuid(), $customerUuid);
+        $this->assertEmpty($updateCustomerIdentityKeyEvent->getCustomAttributes());
     }
 
     public function testGeneratingIdentityKeyWithCustomerUuidAndCustomerAlreadyHasIdentityKey(): void
@@ -304,5 +307,6 @@ class ManagerTest extends TestCase
         $this->assertSame($deviceUuid, $customerNewDeviceEvent->getDeviceUuid());
         $this->assertSame($customerUuid, $customerNewDeviceEvent->getCustomerUuid());
         $this->assertSame($expectedIdentityKey, $customerNewDeviceEvent->getIdentityKey());
+        $this->assertEmpty($customerNewDeviceEvent->getCustomAttributes());
     }
 }
