@@ -8,7 +8,7 @@ use Predis\ClientInterface;
 use UniqueIdentityManager\Contracts\StorageInterface;
 use UniqueIdentityManager\Exceptions\StorageKeyDoesNotExistsException;
 
-class RedisStorageInterface implements StorageInterface
+class RedisStorage implements StorageInterface
 {
     /**
      * @var ClientInterface
