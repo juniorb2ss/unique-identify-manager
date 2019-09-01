@@ -1,7 +1,7 @@
 {
   "name": "juniorb2ss/unique-identity-manager",
   "description": "Unique Identity Manager",
-  "keywords": [],
+  "keywords": ["unique-identity-manager"],
   "type": "library",
   "license": "proprietary",
   "require": {
