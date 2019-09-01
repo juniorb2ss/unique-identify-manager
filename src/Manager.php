@@ -41,7 +41,7 @@ class Manager
         $this->emitter = $emitter ?? new Emitter();
     }
 
-    public function identify(string $deviceUuid, ?string $customerUuid = null, array $customerAttributes = []): string
+    public function identify(string $deviceUuid, ?string $customerUuid = null, array $customAttributes = []): string
     {
         $identityKey = $this->getIdentityByCustomerUuid($customerUuid);
 
@@ -51,7 +51,7 @@ class Manager
                     $deviceUuid,
                     $customerUuid,
                     $identityKey,
-                    $customerAttributes
+                    $customAttributes
                 )
             );
 
@@ -61,24 +61,24 @@ class Manager
         $identityKey = $this->getIdentityByDeviceUuid($deviceUuid);
 
         if (!$identityKey) {
-            $identityKey = $this->createDeviceIdentityKey($deviceUuid, $customerAttributes);
+            $identityKey = $this->createDeviceIdentityKey($deviceUuid, $customAttributes);
 
             $this->emitter->emit(
                 new NewDeviceIdentityKeyEvent(
                     $identityKey,
-                    $customerAttributes
+                    $customAttributes
                 )
             );
         }
 
         if ($customerUuid) {
-            $this->updateCustomerIdentityKey($customerUuid, $identityKey, $customerAttributes);
+            $this->updateCustomerIdentityKey($customerUuid, $identityKey, $customAttributes);
 
             $this->emitter->emit(
                 new UpdateCustomerIdentityKeyEvent(
                     $customerUuid,
                     $identityKey,
-                    $customerAttributes
+                    $customAttributes
                 )
             );
         }
