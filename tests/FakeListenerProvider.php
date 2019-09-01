@@ -7,9 +7,6 @@ namespace UniqueIdentityManager\Tests;
 use League\Event\ListenerAcceptorInterface;
 use League\Event\ListenerInterface;
 use League\Event\ListenerProviderInterface;
-use UniqueIdentityManager\Events\CustomerNewDeviceEvent;
-use UniqueIdentityManager\Events\NewDeviceIdentityKeyEvent;
-use UniqueIdentityManager\Events\UpdateCustomerIdentityKeyEvent;
 
 class FakeListenerProvider implements ListenerProviderInterface
 {
@@ -25,8 +22,6 @@ class FakeListenerProvider implements ListenerProviderInterface
 
     public function provideListeners(ListenerAcceptorInterface $listenerAcceptor): void
     {
-        $listenerAcceptor->addListener(CustomerNewDeviceEvent::EVENT_NAME, $this->listener);
-        $listenerAcceptor->addListener(NewDeviceIdentityKeyEvent::EVENT_NAME, $this->listener);
-        $listenerAcceptor->addListener(UpdateCustomerIdentityKeyEvent::EVENT_NAME, $this->listener);
+        $listenerAcceptor->addListener('*', $this->listener);
     }
 }
