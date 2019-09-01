@@ -59,13 +59,13 @@ class ManagerTest extends TestCase
     {
         $deviceUuid = (string) Uuid::uuid1();
         $customerUuid = (string) Uuid::uuid1();
-        $expectedidentityKey = (string) Uuid::uuid1();
+        $expectedIdentityKey = (string) Uuid::uuid1();
 
         $identityGenerator = $this->prophesize(IdentityGenerator::class);
         $identityGenerator
             ->generate()
             ->shouldBeCalled()
-            ->willReturn(Uuid::fromString($expectedidentityKey));
+            ->willReturn(Uuid::fromString($expectedIdentityKey));
 
         /** @var IdentityGenerator $identityGenerator */
         $identityGenerator = $identityGenerator->reveal();
@@ -82,14 +82,14 @@ class ManagerTest extends TestCase
             $customerUuid
         );
 
-        $this->assertSame($expectedidentityKey, $identityKey);
+        $this->assertSame($expectedIdentityKey, $identityKey);
     }
 
     public function testGeneratingIdentityKeyWithDeviceUuidAndCustomerDoesNotHaveidentityKey(): void
     {
         $deviceUuid = (string) Uuid::uuid1();
         $customerUuid = (string) Uuid::uuid1();
-        $expectedidentityKey = (string) Uuid::uuid1();
+        $expectedIdentityKey = (string) Uuid::uuid1();
 
         $identityGenerator = $this->prophesize(IdentityGenerator::class);
 
@@ -104,7 +104,7 @@ class ManagerTest extends TestCase
                     Manager::DEVICE_KEY_IDENTIFICATION_NAME,
                     $deviceUuid
                 ),
-                $expectedidentityKey
+                $expectedIdentityKey
             );
 
         $storage = new RedisStorage($redis);
@@ -121,14 +121,14 @@ class ManagerTest extends TestCase
             $customerUuid
         );
 
-        $this->assertSame($expectedidentityKey, $identityKey);
+        $this->assertSame($expectedIdentityKey, $identityKey);
     }
 
     public function testGeneratingIdentityKeyWithCustomerUuidAndCustomerAlreadyHasidentityKey(): void
     {
         $deviceUuid = (string) Uuid::uuid1();
         $customerUuid = (string) Uuid::uuid1();
-        $expectedidentityKey = (string) Uuid::uuid1();
+        $expectedIdentityKey = (string) Uuid::uuid1();
 
         $identityGenerator = $this->prophesize(IdentityGenerator::class);
 
@@ -143,7 +143,7 @@ class ManagerTest extends TestCase
                     Manager::CUSTOMER_KEY_IDENTIFICATION_NAME,
                     $customerUuid
                 ),
-                $expectedidentityKey
+                $expectedIdentityKey
             );
 
         $storage = new RedisStorage($redis);
@@ -157,6 +157,6 @@ class ManagerTest extends TestCase
             $customerUuid
         );
 
-        $this->assertSame($expectedidentityKey, $identityKey);
+        $this->assertSame($expectedIdentityKey, $identityKey);
     }
 }

@@ -76,7 +76,7 @@ class ManagerTest extends TestCase
     {
         $deviceUuid = 'a6b203a4-c561-4157-820f-408b9bf9aced';
         $customerUuid = '1d60b5e1-f5cb-43cc-96f3-7032c606ead5';
-        $expectedidentityKey = '2da90be1-d1de-429f-b5f9-b9f6fbafb8e0';
+        $expectedIdentityKey = '2da90be1-d1de-429f-b5f9-b9f6fbafb8e0';
 
         $identityGenerator = $this->prophesize(IdentityGenerator::class);
         $identityGenerator
@@ -142,14 +142,14 @@ class ManagerTest extends TestCase
             $customerUuid
         );
 
-        $this->assertSame($expectedidentityKey, $identityKey);
+        $this->assertSame($expectedIdentityKey, $identityKey);
     }
 
     public function testGeneratingIdentityKeyWithDeviceUuidAndCustomerDoesNotHaveidentityKey(): void
     {
         $deviceUuid = 'a6b203a4-c561-4157-820f-408b9bf9aced';
         $customerUuid = '1d60b5e1-f5cb-43cc-96f3-7032c606ead5';
-        $expectedidentityKey = '2da90be1-d1de-429f-b5f9-b9f6fbafb8e0';
+        $expectedIdentityKey = '2da90be1-d1de-429f-b5f9-b9f6fbafb8e0';
 
         $identityGenerator = $this->prophesize(IdentityGenerator::class);
 
@@ -175,7 +175,7 @@ class ManagerTest extends TestCase
                 )
             )
             ->shouldBeCalled()
-            ->willReturn($expectedidentityKey);
+            ->willReturn($expectedIdentityKey);
 
         $storage
             ->set(
@@ -183,7 +183,7 @@ class ManagerTest extends TestCase
                     Manager::CUSTOMER_KEY_IDENTIFICATION_NAME,
                     $customerUuid
                 ),
-                $expectedidentityKey
+                $expectedIdentityKey
             )
             ->shouldBeCalled();
 
@@ -203,14 +203,14 @@ class ManagerTest extends TestCase
             $customerUuid
         );
 
-        $this->assertSame($expectedidentityKey, $identityKey);
+        $this->assertSame($expectedIdentityKey, $identityKey);
     }
 
     public function testGeneratingIdentityKeyWithCustomerUuidAndCustomerAlreadyHasidentityKey(): void
     {
         $deviceUuid = 'a6b203a4-c561-4157-820f-408b9bf9aced';
         $customerUuid = '1d60b5e1-f5cb-43cc-96f3-7032c606ead5';
-        $expectedidentityKey = '2da90be1-d1de-429f-b5f9-b9f6fbafb8e0';
+        $expectedIdentityKey = '2da90be1-d1de-429f-b5f9-b9f6fbafb8e0';
 
         $identityGenerator = $this->prophesize(IdentityGenerator::class);
 
@@ -226,7 +226,7 @@ class ManagerTest extends TestCase
                 )
             )
             ->shouldBeCalled()
-            ->willReturn($expectedidentityKey);
+            ->willReturn($expectedIdentityKey);
 
         /** @var Storage $storage */
         $storage = $storage->reveal();
@@ -241,6 +241,6 @@ class ManagerTest extends TestCase
             $customerUuid
         );
 
-        $this->assertSame($expectedidentityKey, $identityKey);
+        $this->assertSame($expectedIdentityKey, $identityKey);
     }
 }
