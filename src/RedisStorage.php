@@ -1,11 +1,14 @@
 <?php
 
+declare(strict_types=1);
+
 namespace UniqueIdentityManager;
 
 use Predis\ClientInterface;
+use UniqueIdentityManager\Contracts\Storage;
 use UniqueIdentityManager\Exceptions\StorageKeyDoesNotExistsException;
 
-class Storage
+class RedisStorage implements Storage
 {
     /**
      * @var ClientInterface
@@ -18,26 +21,28 @@ class Storage
     }
 
     /**
-     * @param  string  $identity
-     * @return string|null
      * @throws StorageKeyDoesNotExistsException
      */
-    public function get(string $identity): ?string
+    public function exists(string $key): bool
     {
-        $value = $this->client->get($identity);
-
-        if(!$value) {
+        if (!$this->client->exists($key)) {
             throw new StorageKeyDoesNotExistsException();
         }
 
-        return $value;
+        return true;
     }
 
-    /**
-     * @param  string  $key
-     * @param  string  $value
-     * @return bool
-     */
+    public function get(string $key): ?string
+    {
+        try {
+            $this->exists($key);
+
+            return $this->client->get($key);
+        } catch (StorageKeyDoesNotExistsException $exception) {
+            return null;
+        }
+    }
+
     public function set(string $key, string $value): void
     {
         $this->client->set($key, $value);

@@ -19,8 +19,20 @@
       "UniqueIdentityManager\\Tests\\": "tests"
     }
   },
+  "scripts": {
+    "lint": "php-cs-fixer fix --verbose --show-progress=estimating",
+    "lint:check": [
+      "php-cs-fixer fix --dry-run --verbose --show-progress=estimating"
+    ],
+    "phpunit": "phpunit --exclude-group third-party",
+    "test": [
+      "@lint:check",
+      "@phpunit"
+    ]
+  },
   "require-dev": {
     "phpunit/phpunit": "^8.3",
-    "phpspec/prophecy": "^1.8"
+    "phpspec/prophecy": "^1.8",
+    "friendsofphp/php-cs-fixer": "^2.15"
   }
 }

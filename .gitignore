@@ -2,3 +2,4 @@ vendor
 .phpunit.result.cache
 coverage.xml
 .idea
+.php_cs.cache

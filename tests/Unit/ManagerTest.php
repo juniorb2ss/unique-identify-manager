@@ -1,18 +1,18 @@
 <?php
 
+declare(strict_types=1);
+
 namespace UniqueIdentityManager\Tests\Unit;
 
-use Predis\ClientInterface;
 use Ramsey\Uuid\Uuid;
-use UniqueIdentityManager\Exceptions\StorageKeyDoesNotExistsException;
+use UniqueIdentityManager\Contracts\Storage;
 use UniqueIdentityManager\IdentityGenerator;
 use UniqueIdentityManager\Manager;
-use UniqueIdentityManager\Storage;
 use UniqueIdentityManager\Tests\TestCase;
 
 class ManagerTest extends TestCase
 {
-    public function testGeneratingidentityKeyWithoutCustomerUuid(): void
+    public function testGeneratingIdentityKeyWithoutCustomerUuid(): void
     {
         $deviceUuid = (string) Uuid::uuid1();
 
@@ -22,12 +22,11 @@ class ManagerTest extends TestCase
             ->shouldBeCalled()
             ->willReturn(Uuid::fromString('2da90be1-d1de-429f-b5f9-b9f6fbafb8e0'));
 
-
         /** @var IdentityGenerator $identityGenerator */
         $identityGenerator = $identityGenerator->reveal();
 
-        $client = $this->prophesize(ClientInterface::class);
-        $client
+        $storage = $this->prophesize(Storage::class);
+        $storage
             ->get(
                 sprintf(
                     Manager::CUSTOMER_KEY_IDENTIFICATION_NAME,
@@ -35,9 +34,9 @@ class ManagerTest extends TestCase
                 )
             )
             ->shouldBeCalled()
-            ->willThrow(new StorageKeyDoesNotExistsException());
+            ->willReturn(null);
 
-        $client
+        $storage
             ->get(
                 sprintf(
                     Manager::DEVICE_KEY_IDENTIFICATION_NAME,
@@ -45,9 +44,9 @@ class ManagerTest extends TestCase
                 )
             )
             ->shouldBeCalled()
-            ->willThrow(new StorageKeyDoesNotExistsException());
+            ->willReturn(null);
 
-        $client
+        $storage
             ->set(
                 sprintf(
                     Manager::DEVICE_KEY_IDENTIFICATION_NAME,
@@ -55,13 +54,11 @@ class ManagerTest extends TestCase
                 ),
                 $identityGenerator->generate()
             )
-            ->shouldBeCalled()
-            ->willReturn(true);
+            ->shouldBeCalled();
 
-        /** @var ClientInterface $client */
-        $client = $client->reveal();
+        /** @var Storage $storage */
+        $storage = $storage->reveal();
 
-        $storage = new Storage($client);
         $manager = new Manager($storage, $identityGenerator);
 
         // Cenario
@@ -87,12 +84,11 @@ class ManagerTest extends TestCase
             ->shouldBeCalled()
             ->willReturn(Uuid::fromString('2da90be1-d1de-429f-b5f9-b9f6fbafb8e0'));
 
-
         /** @var IdentityGenerator $identityGenerator */
         $identityGenerator = $identityGenerator->reveal();
 
-        $client = $this->prophesize(ClientInterface::class);
-        $client
+        $storage = $this->prophesize(Storage::class);
+        $storage
             ->get(
                 sprintf(
                     Manager::CUSTOMER_KEY_IDENTIFICATION_NAME,
@@ -100,9 +96,9 @@ class ManagerTest extends TestCase
                 )
             )
             ->shouldBeCalled()
-            ->willThrow(new StorageKeyDoesNotExistsException());
+            ->willReturn(null);
 
-        $client
+        $storage
             ->get(
                 sprintf(
                     Manager::DEVICE_KEY_IDENTIFICATION_NAME,
@@ -110,9 +106,9 @@ class ManagerTest extends TestCase
                 )
             )
             ->shouldBeCalled()
-            ->willThrow(new StorageKeyDoesNotExistsException());
+            ->willReturn(null);
 
-        $client
+        $storage
             ->set(
                 sprintf(
                     Manager::DEVICE_KEY_IDENTIFICATION_NAME,
@@ -120,10 +116,9 @@ class ManagerTest extends TestCase
                 ),
                 $identityGenerator->generate()
             )
-            ->shouldBeCalled()
-            ->willReturn(true);
+            ->shouldBeCalled();
 
-        $client
+        $storage
             ->set(
                 sprintf(
                     Manager::CUSTOMER_KEY_IDENTIFICATION_NAME,
@@ -131,13 +126,11 @@ class ManagerTest extends TestCase
                 ),
                 $identityGenerator->generate()
             )
-            ->shouldBeCalled()
-            ->willReturn(true);
+            ->shouldBeCalled();
 
-        /** @var ClientInterface $client */
-        $client = $client->reveal();
+        /** @var Storage $storage */
+        $storage = $storage->reveal();
 
-        $storage = new Storage($client);
         $manager = new Manager($storage, $identityGenerator);
 
         // Cenario:
@@ -163,8 +156,8 @@ class ManagerTest extends TestCase
         /** @var IdentityGenerator $identityGenerator */
         $identityGenerator = $identityGenerator->reveal();
 
-        $client = $this->prophesize(ClientInterface::class);
-        $client
+        $storage = $this->prophesize(Storage::class);
+        $storage
             ->get(
                 sprintf(
                     Manager::CUSTOMER_KEY_IDENTIFICATION_NAME,
@@ -172,9 +165,9 @@ class ManagerTest extends TestCase
                 )
             )
             ->shouldBeCalled()
-            ->willThrow(new StorageKeyDoesNotExistsException());
+            ->willReturn(null);
 
-        $client
+        $storage
             ->get(
                 sprintf(
                     Manager::DEVICE_KEY_IDENTIFICATION_NAME,
@@ -184,7 +177,7 @@ class ManagerTest extends TestCase
             ->shouldBeCalled()
             ->willReturn($expectedidentityKey);
 
-        $client
+        $storage
             ->set(
                 sprintf(
                     Manager::CUSTOMER_KEY_IDENTIFICATION_NAME,
@@ -192,13 +185,11 @@ class ManagerTest extends TestCase
                 ),
                 $expectedidentityKey
             )
-            ->shouldBeCalled()
-            ->willReturn(true);
+            ->shouldBeCalled();
 
-        /** @var ClientInterface $client */
-        $client = $client->reveal();
+        /** @var Storage $storage */
+        $storage = $storage->reveal();
 
-        $storage = new Storage($client);
         $manager = new Manager($storage, $identityGenerator);
 
         // Cenario:
@@ -226,8 +217,8 @@ class ManagerTest extends TestCase
         /** @var IdentityGenerator $identityGenerator */
         $identityGenerator = $identityGenerator->reveal();
 
-        $client = $this->prophesize(ClientInterface::class);
-        $client
+        $storage = $this->prophesize(Storage::class);
+        $storage
             ->get(
                 sprintf(
                     Manager::CUSTOMER_KEY_IDENTIFICATION_NAME,
@@ -237,10 +228,9 @@ class ManagerTest extends TestCase
             ->shouldBeCalled()
             ->willReturn($expectedidentityKey);
 
-        /** @var ClientInterface $client */
-        $client = $client->reveal();
+        /** @var Storage $storage */
+        $storage = $storage->reveal();
 
-        $storage = new Storage($client);
         $manager = new Manager($storage, $identityGenerator);
 
         // Cenário:

@@ -1,8 +1,10 @@
 <?php
 
+declare(strict_types=1);
+
 namespace UniqueIdentityManager;
 
-use UniqueIdentityManager\Exceptions\StorageKeyDoesNotExistsException;
+use UniqueIdentityManager\Contracts\Storage;
 
 class Manager
 {
@@ -25,83 +27,54 @@ class Manager
         $this->identityGenerator = $identityGenerator;
     }
 
-    /**
-     * @param  string  $deviceUuid
-     * @param  string|null  $customerUuid
-     * @return string
-     */
     public function identify(string $deviceUuid, ?string $customerUuid = null): string
     {
         $identityKey = $this->getIdentityByCustomerUuid($customerUuid);
 
-        if($identityKey) {
+        if ($identityKey) {
             return $identityKey;
         }
 
         $identityKey = $this->getIdentityByDeviceUuid($deviceUuid);
 
-        if(!$identityKey) {
+        if (!$identityKey) {
             $identityKey = $this->createDeviceIdentityKey($deviceUuid);
         }
 
-        if($customerUuid) {
+        if ($customerUuid) {
             $this->updateCustomerIdentityKey($customerUuid, $identityKey);
         }
 
         return $identityKey;
     }
 
-    /**
-     * @param  string|null  $customerUuid
-     * @return string|null
-     */
     private function getIdentityByCustomerUuid(?string $customerUuid): ?string
     {
-        try {
-            $identity = $this
-                ->storage
-                ->get(
-                    sprintf(
-                        self::CUSTOMER_KEY_IDENTIFICATION_NAME,
-                        $customerUuid
-                    )
-                );
-
-            return $identity;
-        } catch (StorageKeyDoesNotExistsException $exception) {}
-
-        return null;
+        return $this
+            ->storage
+            ->get(
+                sprintf(
+                    self::CUSTOMER_KEY_IDENTIFICATION_NAME,
+                    $customerUuid
+                )
+            );
     }
 
-    /**
-     * @param  string|null  $deviceUuid
-     * @return string|null
-     */
     private function getIdentityByDeviceUuid(string $deviceUuid): ?string
     {
-        try {
-            $identity = $this
-                ->storage
-                ->get(
-                    sprintf(
-                        self::DEVICE_KEY_IDENTIFICATION_NAME,
-                        $deviceUuid
-                    )
-                );
-
-            return $identity;
-        } catch (StorageKeyDoesNotExistsException $exception) {}
-
-        return null;
+        return $this
+            ->storage
+            ->get(
+                sprintf(
+                    self::DEVICE_KEY_IDENTIFICATION_NAME,
+                    $deviceUuid
+                )
+            );
     }
 
-    /**
-     * @param  string  $deviceUuid
-     * @return string
-     */
     private function createDeviceIdentityKey(string $deviceUuid): string
     {
-        $identityKey = $this->identityGenerator->generate();
+        $identityKey = (string) $this->identityGenerator->generate();
 
         $this
             ->storage
@@ -116,10 +89,6 @@ class Manager
         return $identityKey;
     }
 
-    /**
-     * @param  string  $customerUuid
-     * @param  string  $identityKey
-     */
     private function updateCustomerIdentityKey(string $customerUuid, string $identityKey): void
     {
         $this

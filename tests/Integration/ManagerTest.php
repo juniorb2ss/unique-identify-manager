@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace UniqueIdentityManager\Tests\Integration;
 
 use Predis\Client;
@@ -7,7 +9,7 @@ use Predis\ClientInterface;
 use Ramsey\Uuid\Uuid;
 use UniqueIdentityManager\IdentityGenerator;
 use UniqueIdentityManager\Manager;
-use UniqueIdentityManager\Storage;
+use UniqueIdentityManager\RedisStorage;
 use UniqueIdentityManager\Tests\TestCase;
 
 /**
@@ -19,7 +21,7 @@ class ManagerTest extends TestCase
     {
         $this->redis = new Client(
             [
-                'tcp://localhost'
+                'tcp://localhost',
             ]
         );
 
@@ -36,11 +38,10 @@ class ManagerTest extends TestCase
             ->shouldBeCalled()
             ->willReturn(Uuid::uuid1());
 
-
         /** @var IdentityGenerator $identityGenerator */
         $identityGenerator = $identityGenerator->reveal();
 
-        $storage = new Storage($this->redis);
+        $storage = new RedisStorage($this->redis);
         $manager = new Manager($storage, $identityGenerator);
 
         // Cenario
@@ -69,7 +70,7 @@ class ManagerTest extends TestCase
         /** @var IdentityGenerator $identityGenerator */
         $identityGenerator = $identityGenerator->reveal();
 
-        $storage = new Storage($this->redis);
+        $storage = new RedisStorage($this->redis);
         $manager = new Manager($storage, $identityGenerator);
 
         // Cenario:
@@ -106,7 +107,7 @@ class ManagerTest extends TestCase
                 $expectedidentityKey
             );
 
-        $storage = new Storage($redis);
+        $storage = new RedisStorage($redis);
         $manager = new Manager($storage, $identityGenerator);
 
         // Cenario:
@@ -145,7 +146,7 @@ class ManagerTest extends TestCase
                 $expectedidentityKey
             );
 
-        $storage = new Storage($redis);
+        $storage = new RedisStorage($redis);
         $manager = new Manager($storage, $identityGenerator);
 
         // Cenário:
