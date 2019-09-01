@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace UniqueIdentityManager;
 
 use League\Event\Emitter;
+use League\Event\EmitterInterface;
 use UniqueIdentityManager\Contracts\Storage;
 use UniqueIdentityManager\Events\CustomerNewDeviceEvent;
 use UniqueIdentityManager\Events\NewDeviceIdentityKeyEvent;
@@ -26,14 +27,14 @@ class Manager
     private $identityGenerator;
 
     /**
-     * @var Emitter
+     * @var EmitterInterface
      */
     private $emitter;
 
     public function __construct(
         Storage $storage,
         IdentityGenerator $identityGenerator,
-        Emitter $emitter = null
+        EmitterInterface $emitter = null
     ) {
         $this->storage = $storage;
         $this->identityGenerator = $identityGenerator;
