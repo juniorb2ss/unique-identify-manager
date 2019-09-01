@@ -61,7 +61,7 @@ class Manager
         $identityKey = $this->getIdentityByDeviceUuid($deviceUuid);
 
         if (!$identityKey) {
-            $identityKey = $this->createDeviceIdentityKey($deviceUuid);
+            $identityKey = $this->createDeviceIdentityKey($deviceUuid, $customerAttributes);
 
             $this->emitter->emit(
                 new NewDeviceIdentityKeyEvent(
@@ -72,7 +72,7 @@ class Manager
         }
 
         if ($customerUuid) {
-            $this->updateCustomerIdentityKey($customerUuid, $identityKey);
+            $this->updateCustomerIdentityKey($customerUuid, $identityKey, $customerAttributes);
 
             $this->emitter->emit(
                 new UpdateCustomerIdentityKeyEvent(
@@ -110,7 +110,7 @@ class Manager
             );
     }
 
-    private function createDeviceIdentityKey(string $deviceUuid): string
+    private function createDeviceIdentityKey(string $deviceUuid, array $customAttributes = []): string
     {
         $identityKey = (string) $this->identityGenerator->generate();
 
@@ -127,7 +127,7 @@ class Manager
         return $identityKey;
     }
 
-    private function updateCustomerIdentityKey(string $customerUuid, string $identityKey): void
+    private function updateCustomerIdentityKey(string $customerUuid, string $identityKey, array $customAttributes = []): void
     {
         $this
             ->storage
