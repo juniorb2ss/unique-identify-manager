@@ -9,7 +9,7 @@ use League\Event\EmitterInterface;
 use UniqueIdentityManager\Contracts\Storage;
 use UniqueIdentityManager\Events\CustomerNewDeviceEvent;
 use UniqueIdentityManager\Events\NewDeviceIdentityKeyEvent;
-use UniqueIdentityManager\Events\UpdateCustomerIdentityKey;
+use UniqueIdentityManager\Events\UpdateCustomerIdentityKeyEvent;
 
 class Manager
 {
@@ -73,7 +73,7 @@ class Manager
             $this->updateCustomerIdentityKey($customerUuid, $identityKey);
 
             $this->emitter->emit(
-                new UpdateCustomerIdentityKey(
+                new UpdateCustomerIdentityKeyEvent(
                     $customerUuid,
                     $identityKey
                 )

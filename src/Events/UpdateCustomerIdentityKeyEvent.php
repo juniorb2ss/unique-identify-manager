@@ -7,7 +7,7 @@ namespace UniqueIdentityManager\Events;
 use League\Event\EmitterInterface;
 use League\Event\EventInterface;
 
-class UpdateCustomerIdentityKey implements EventInterface
+class UpdateCustomerIdentityKeyEvent implements EventInterface
 {
     const EVENT_NAME = 'identity-manager.event.update.customer.identity-key';
 
