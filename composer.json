@@ -22,9 +22,7 @@
   },
   "scripts": {
     "lint": "php-cs-fixer fix --verbose --show-progress=estimating",
-    "lint:check": [
-      "php-cs-fixer fix --dry-run --verbose --show-progress=estimating"
-    ],
+    "lint:check": "php-cs-fixer fix --dry-run --verbose --show-progress=estimating",
     "phpunit": "phpunit --exclude-group third-party",
     "test": [
       "@lint:check",
