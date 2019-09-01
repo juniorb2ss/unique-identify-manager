@@ -36,12 +36,7 @@ class UpdateCustomerIdentityKeyEvent extends AbstractEvent
         return $this->customerUuid;
     }
 
-    /**
-     * Get the event name.
-     *
-     * @return string
-     */
-    public function getName()
+    public function getName(): string
     {
         return self::EVENT_NAME;
     }

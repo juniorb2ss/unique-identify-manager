@@ -25,12 +25,7 @@ class NewDeviceIdentityKeyEvent extends AbstractEvent
         return $this->identityKey;
     }
 
-    /**
-     * Get the event name.
-     *
-     * @return string
-     */
-    public function getName()
+    public function getName(): string
     {
         return self::EVENT_NAME;
     }
