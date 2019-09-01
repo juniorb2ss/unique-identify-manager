@@ -33,11 +33,11 @@ class Manager
 
     public function __construct(
         Storage $storage,
-        IdentityGenerator $identityGenerator,
+        IdentityGenerator $identityGenerator = null,
         EmitterInterface $emitter = null
     ) {
         $this->storage = $storage;
-        $this->identityGenerator = $identityGenerator;
+        $this->identityGenerator = $identityGenerator ?? new IdentityGenerator();
         $this->emitter = $emitter ?? new Emitter();
     }
 

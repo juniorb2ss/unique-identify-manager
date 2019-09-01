@@ -91,11 +91,6 @@ class ManagerTest extends TestCase
         $customerUuid = (string) Uuid::uuid1();
         $expectedIdentityKey = (string) Uuid::uuid1();
 
-        $identityGenerator = $this->prophesize(IdentityGenerator::class);
-
-        /** @var IdentityGenerator $identityGenerator */
-        $identityGenerator = $identityGenerator->reveal();
-
         /** @var ClientInterface $redis */
         $redis = $this->redis;
         $redis
@@ -108,7 +103,7 @@ class ManagerTest extends TestCase
             );
 
         $storage = new RedisStorage($redis);
-        $manager = new Manager($storage, $identityGenerator);
+        $manager = new Manager($storage);
 
         // Cenario:
         // O device já possui um identificador, e o customer criou uma conta nova
@@ -130,11 +125,6 @@ class ManagerTest extends TestCase
         $customerUuid = (string) Uuid::uuid1();
         $expectedIdentityKey = (string) Uuid::uuid1();
 
-        $identityGenerator = $this->prophesize(IdentityGenerator::class);
-
-        /** @var IdentityGenerator $identityGenerator */
-        $identityGenerator = $identityGenerator->reveal();
-
         /** @var ClientInterface $redis */
         $redis = $this->redis;
         $redis
@@ -147,7 +137,7 @@ class ManagerTest extends TestCase
             );
 
         $storage = new RedisStorage($redis);
-        $manager = new Manager($storage, $identityGenerator);
+        $manager = new Manager($storage);
 
         // Cenário:
         // Customer já contém outro identificador, possívelmente de outro computador
