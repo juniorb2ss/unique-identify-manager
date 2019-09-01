@@ -55,7 +55,7 @@ class ManagerTest extends TestCase
         $this->assertSame((string) $identityGenerator->generate(), $identityKey);
     }
 
-    public function testGeneratingIdentityKeyWithCustomerUuidButCustomerDoesNotHaveidentityKey(): void
+    public function testGeneratingIdentityKeyWithCustomerUuidButCustomerDoesNotHaveIdentityKey(): void
     {
         $deviceUuid = (string) Uuid::uuid1();
         $customerUuid = (string) Uuid::uuid1();
@@ -85,7 +85,7 @@ class ManagerTest extends TestCase
         $this->assertSame($expectedIdentityKey, $identityKey);
     }
 
-    public function testGeneratingIdentityKeyWithDeviceUuidAndCustomerDoesNotHaveidentityKey(): void
+    public function testGeneratingIdentityKeyWithDeviceUuidAndCustomerDoesNotHaveIdentityKey(): void
     {
         $deviceUuid = (string) Uuid::uuid1();
         $customerUuid = (string) Uuid::uuid1();
@@ -119,7 +119,7 @@ class ManagerTest extends TestCase
         $this->assertSame($expectedIdentityKey, $identityKey);
     }
 
-    public function testGeneratingIdentityKeyWithCustomerUuidAndCustomerAlreadyHasidentityKey(): void
+    public function testGeneratingIdentityKeyWithCustomerUuidAndCustomerAlreadyHasIdentityKey(): void
     {
         $deviceUuid = (string) Uuid::uuid1();
         $customerUuid = (string) Uuid::uuid1();
