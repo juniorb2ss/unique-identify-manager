@@ -20,10 +20,16 @@ class UpdateCustomerIdentityKeyEvent extends AbstractEvent
      */
     public $customerUuid;
 
-    public function __construct(string $customerUuid, string $identityKey)
+    /**
+     * @var array
+     */
+    private $customAttributes;
+
+    public function __construct(string $customerUuid, string $identityKey, array $customAttributes = [])
     {
         $this->identityKey = $identityKey;
         $this->customerUuid = $customerUuid;
+        $this->customAttributes = $customAttributes;
     }
 
     public function getIdentityKey(): string
@@ -39,5 +45,10 @@ class UpdateCustomerIdentityKeyEvent extends AbstractEvent
     public function getName(): string
     {
         return self::EVENT_NAME;
+    }
+
+    public function getCustomAttributes(): array
+    {
+        return $this->customAttributes;
     }
 }

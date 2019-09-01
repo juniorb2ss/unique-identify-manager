@@ -41,7 +41,7 @@ class Manager
         $this->emitter = $emitter ?? new Emitter();
     }
 
-    public function identify(string $deviceUuid, ?string $customerUuid = null): string
+    public function identify(string $deviceUuid, ?string $customerUuid = null, array $customerAttributes = []): string
     {
         $identityKey = $this->getIdentityByCustomerUuid($customerUuid);
 
@@ -50,7 +50,8 @@ class Manager
                 new CustomerNewDeviceEvent(
                     $deviceUuid,
                     $customerUuid,
-                    $identityKey
+                    $identityKey,
+                    $customerAttributes
                 )
             );
 
@@ -64,7 +65,8 @@ class Manager
 
             $this->emitter->emit(
                 new NewDeviceIdentityKeyEvent(
-                    $identityKey
+                    $identityKey,
+                    $customerAttributes
                 )
             );
         }
@@ -75,7 +77,8 @@ class Manager
             $this->emitter->emit(
                 new UpdateCustomerIdentityKeyEvent(
                     $customerUuid,
-                    $identityKey
+                    $identityKey,
+                    $customerAttributes
                 )
             );
         }

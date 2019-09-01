@@ -25,11 +25,21 @@ class CustomerNewDeviceEvent extends AbstractEvent
      */
     private $identityKey;
 
-    public function __construct(string $deviceUuid, string $customerUuid, string $identityKey)
-    {
+    /**
+     * @var array
+     */
+    private $customAttributes;
+
+    public function __construct(
+        string $deviceUuid,
+        string $customerUuid,
+        string $identityKey,
+        array $customAttributes = []
+    ) {
         $this->deviceUuid = $deviceUuid;
         $this->customerUuid = $customerUuid;
         $this->identityKey = $identityKey;
+        $this->customAttributes = $customAttributes;
     }
 
     public function getDeviceUuid(): string
@@ -50,5 +60,10 @@ class CustomerNewDeviceEvent extends AbstractEvent
     public function getName(): string
     {
         return self::EVENT_NAME;
+    }
+
+    public function getCustomAttributes(): array
+    {
+        return $this->customAttributes;
     }
 }

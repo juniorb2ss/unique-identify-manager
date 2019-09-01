@@ -18,6 +18,9 @@ class ManagerTest extends TestCase
     public function testGeneratingIdentityKeyWithoutCustomerUuid(): void
     {
         $deviceUuid = (string) Uuid::uuid1();
+        $customAttributes = [
+            'User-Agent' => 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_13_6)',
+        ];
 
         $identityGenerator = $this->prophesize(IdentityGenerator::class);
         $identityGenerator
@@ -69,7 +72,8 @@ class ManagerTest extends TestCase
         // por isso é esperado que se crie um identificador unico para esse device
         $identityKey = $manager->identify(
             $deviceUuid,
-            null
+            null,
+            $customAttributes
         );
 
         $this->assertSame((string) $identityGenerator->generate(), $identityKey);
@@ -82,6 +86,7 @@ class ManagerTest extends TestCase
 
         $this->assertInstanceOf(NewDeviceIdentityKeyEvent::class, $newDeviceIdentityKeyEvent);
         $this->assertSame($newDeviceIdentityKeyEvent->getIdentityKey(), (string) $identityGenerator->generate());
+        $this->assertSame($customAttributes, $newDeviceIdentityKeyEvent->getCustomAttributes());
     }
 
     public function testGeneratingIdentityKeyWithCustomerUuidButCustomerDoesNotHaveIdentityKey(): void

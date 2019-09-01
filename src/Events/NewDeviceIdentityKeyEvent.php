@@ -15,9 +15,15 @@ class NewDeviceIdentityKeyEvent extends AbstractEvent
      */
     public $identityKey;
 
-    public function __construct(string $identityKey)
+    /**
+     * @var array
+     */
+    private $customAttributes;
+
+    public function __construct(string $identityKey, array $customAttributes = [])
     {
         $this->identityKey = $identityKey;
+        $this->customAttributes = $customAttributes;
     }
 
     public function getIdentityKey(): string
@@ -28,5 +34,10 @@ class NewDeviceIdentityKeyEvent extends AbstractEvent
     public function getName(): string
     {
         return self::EVENT_NAME;
+    }
+
+    public function getCustomAttributes(): array
+    {
+        return $this->customAttributes;
     }
 }
