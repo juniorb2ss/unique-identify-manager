@@ -72,7 +72,7 @@ class ManagerTest extends TestCase
         $this->assertSame((string) $identityGenerator->generate(), $identityKey);
     }
 
-    public function testGeneratingidentityKeyWithCustomerUuidButCustomerDoesNotHaveidentityKey(): void
+    public function testGeneratingIdentityKeyWithCustomerUuidButCustomerDoesNotHaveidentityKey(): void
     {
         $deviceUuid = 'a6b203a4-c561-4157-820f-408b9bf9aced';
         $customerUuid = '1d60b5e1-f5cb-43cc-96f3-7032c606ead5';
@@ -145,7 +145,7 @@ class ManagerTest extends TestCase
         $this->assertSame($expectedidentityKey, $identityKey);
     }
 
-    public function testGeneratingidentityKeyWithDeviceUuidAndCustomerDoesNotHaveidentityKey(): void
+    public function testGeneratingIdentityKeyWithDeviceUuidAndCustomerDoesNotHaveidentityKey(): void
     {
         $deviceUuid = 'a6b203a4-c561-4157-820f-408b9bf9aced';
         $customerUuid = '1d60b5e1-f5cb-43cc-96f3-7032c606ead5';
@@ -206,7 +206,7 @@ class ManagerTest extends TestCase
         $this->assertSame($expectedidentityKey, $identityKey);
     }
 
-    public function testGeneratingidentityKeyWithCustomerUuidAndCustomerAlreadyHasidentityKey(): void
+    public function testGeneratingIdentityKeyWithCustomerUuidAndCustomerAlreadyHasidentityKey(): void
     {
         $deviceUuid = 'a6b203a4-c561-4157-820f-408b9bf9aced';
         $customerUuid = '1d60b5e1-f5cb-43cc-96f3-7032c606ead5';
