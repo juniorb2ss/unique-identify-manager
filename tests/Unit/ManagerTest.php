@@ -81,6 +81,8 @@ class ManagerTest extends TestCase
         // testing event listener
         $events = $this->listener->getEvents();
 
+        $this->assertCount(1, $events);
+
         /** @var NewDeviceIdentityKeyEvent $newDeviceIdentityKeyEvent */
         $newDeviceIdentityKeyEvent = $events[0];
 
@@ -164,6 +166,8 @@ class ManagerTest extends TestCase
         // testing event listener
         $events = $this->listener->getEvents();
 
+        $this->assertCount(2, $events);
+
         /** @var NewDeviceIdentityKeyEvent $newDeviceIdentityKeyEvent */
         $newDeviceIdentityKeyEvent = $events[0];
 
@@ -241,6 +245,8 @@ class ManagerTest extends TestCase
         // testing event listener
         $events = $this->listener->getEvents();
 
+        $this->assertCount(1, $events);
+
         /** @var UpdateCustomerIdentityKeyEvent $updateCustomerIdentityKeyEvent */
         $updateCustomerIdentityKeyEvent = $events[0];
 
@@ -288,6 +294,8 @@ class ManagerTest extends TestCase
 
         // testing event listener
         $events = $this->listener->getEvents();
+
+        $this->assertCount(1, $events);
 
         /** @var CustomerNewDeviceEvent $customerNewDeviceEvent */
         $customerNewDeviceEvent = $events[0];
