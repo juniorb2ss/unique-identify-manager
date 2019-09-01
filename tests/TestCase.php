@@ -8,7 +8,7 @@ use League\Event\Emitter;
 use League\Event\EmitterInterface;
 use PHPUnit\Framework\TestCase as BaseTestCase;
 
-class TestCase extends BaseTestCase
+abstract class TestCase extends BaseTestCase
 {
     /**
      * @var EmitterInterface
