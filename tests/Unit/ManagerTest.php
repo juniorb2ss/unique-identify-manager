@@ -6,6 +6,9 @@ namespace UniqueIdentityManager\Tests\Unit;
 
 use Ramsey\Uuid\Uuid;
 use UniqueIdentityManager\Contracts\Storage;
+use UniqueIdentityManager\Events\CustomerNewDeviceEvent;
+use UniqueIdentityManager\Events\NewDeviceIdentityKeyEvent;
+use UniqueIdentityManager\Events\UpdateCustomerIdentityKeyEvent;
 use UniqueIdentityManager\IdentityGenerator;
 use UniqueIdentityManager\Manager;
 use UniqueIdentityManager\Tests\TestCase;
@@ -59,7 +62,7 @@ class ManagerTest extends TestCase
         /** @var Storage $storage */
         $storage = $storage->reveal();
 
-        $manager = new Manager($storage, $identityGenerator);
+        $manager = new Manager($storage, $identityGenerator, $this->emitter);
 
         // Cenario
         // Não existe customerUuuid ainda, pois é um visitante, e o device não contém identificador unico ainda
@@ -70,9 +73,18 @@ class ManagerTest extends TestCase
         );
 
         $this->assertSame((string) $identityGenerator->generate(), $identityKey);
+
+        // testing event listener
+        $events = $this->listener->getEvents();
+
+        /** @var NewDeviceIdentityKeyEvent $newDeviceIdentityKeyEvent */
+        $newDeviceIdentityKeyEvent = $events[0];
+
+        $this->assertInstanceOf(NewDeviceIdentityKeyEvent::class, $newDeviceIdentityKeyEvent);
+        $this->assertSame($newDeviceIdentityKeyEvent->getIdentityKey(), (string) $identityGenerator->generate());
     }
 
-    public function testGeneratingIdentityKeyWithCustomerUuidButCustomerDoesNotHaveidentityKey(): void
+    public function testGeneratingIdentityKeyWithCustomerUuidButCustomerDoesNotHaveIdentityKey(): void
     {
         $deviceUuid = 'a6b203a4-c561-4157-820f-408b9bf9aced';
         $customerUuid = '1d60b5e1-f5cb-43cc-96f3-7032c606ead5';
@@ -131,7 +143,7 @@ class ManagerTest extends TestCase
         /** @var Storage $storage */
         $storage = $storage->reveal();
 
-        $manager = new Manager($storage, $identityGenerator);
+        $manager = new Manager($storage, $identityGenerator, $this->emitter);
 
         // Cenario:
         // o device e o customer nao possuem nenhum identificador unico antes criado
@@ -143,9 +155,25 @@ class ManagerTest extends TestCase
         );
 
         $this->assertSame($expectedIdentityKey, $identityKey);
+
+        // testing event listener
+        $events = $this->listener->getEvents();
+
+        /** @var NewDeviceIdentityKeyEvent $newDeviceIdentityKeyEvent */
+        $newDeviceIdentityKeyEvent = $events[0];
+
+        /** @var UpdateCustomerIdentityKeyEvent $updateCustomerIdentityKeyEvent */
+        $updateCustomerIdentityKeyEvent = $events[1];
+
+        $this->assertInstanceOf(NewDeviceIdentityKeyEvent::class, $newDeviceIdentityKeyEvent);
+        $this->assertSame($newDeviceIdentityKeyEvent->getIdentityKey(), (string) $identityGenerator->generate());
+
+        $this->assertInstanceOf(UpdateCustomerIdentityKeyEvent::class, $updateCustomerIdentityKeyEvent);
+        $this->assertSame($customerUuid, $updateCustomerIdentityKeyEvent->getCustomerUuid());
+        $this->assertSame((string) $identityGenerator->generate(), $updateCustomerIdentityKeyEvent->getIdentityKey());
     }
 
-    public function testGeneratingIdentityKeyWithDeviceUuidAndCustomerDoesNotHaveidentityKey(): void
+    public function testGeneratingIdentityKeyWithDeviceUuidAndCustomerDoesNotHaveIdentityKey(): void
     {
         $deviceUuid = 'a6b203a4-c561-4157-820f-408b9bf9aced';
         $customerUuid = '1d60b5e1-f5cb-43cc-96f3-7032c606ead5';
@@ -190,7 +218,7 @@ class ManagerTest extends TestCase
         /** @var Storage $storage */
         $storage = $storage->reveal();
 
-        $manager = new Manager($storage, $identityGenerator);
+        $manager = new Manager($storage, $identityGenerator, $this->emitter);
 
         // Cenario:
         // O device já possui um identificador, e o customer criou uma conta nova
@@ -204,9 +232,19 @@ class ManagerTest extends TestCase
         );
 
         $this->assertSame($expectedIdentityKey, $identityKey);
+
+        // testing event listener
+        $events = $this->listener->getEvents();
+
+        /** @var UpdateCustomerIdentityKeyEvent $updateCustomerIdentityKeyEvent */
+        $updateCustomerIdentityKeyEvent = $events[0];
+
+        $this->assertInstanceOf(UpdateCustomerIdentityKeyEvent::class, $updateCustomerIdentityKeyEvent);
+        $this->assertSame($updateCustomerIdentityKeyEvent->getIdentityKey(), $expectedIdentityKey);
+        $this->assertSame($updateCustomerIdentityKeyEvent->getCustomerUuid(), $customerUuid);
     }
 
-    public function testGeneratingIdentityKeyWithCustomerUuidAndCustomerAlreadyHasidentityKey(): void
+    public function testGeneratingIdentityKeyWithCustomerUuidAndCustomerAlreadyHasIdentityKey(): void
     {
         $deviceUuid = 'a6b203a4-c561-4157-820f-408b9bf9aced';
         $customerUuid = '1d60b5e1-f5cb-43cc-96f3-7032c606ead5';
@@ -231,7 +269,7 @@ class ManagerTest extends TestCase
         /** @var Storage $storage */
         $storage = $storage->reveal();
 
-        $manager = new Manager($storage, $identityGenerator);
+        $manager = new Manager($storage, $identityGenerator, $this->emitter);
 
         // Cenário:
         // Customer já contém outro identificador, possívelmente de outro computador
@@ -242,5 +280,16 @@ class ManagerTest extends TestCase
         );
 
         $this->assertSame($expectedIdentityKey, $identityKey);
+
+        // testing event listener
+        $events = $this->listener->getEvents();
+
+        /** @var CustomerNewDeviceEvent $customerNewDeviceEvent */
+        $customerNewDeviceEvent = $events[0];
+
+        $this->assertInstanceOf(CustomerNewDeviceEvent::class, $customerNewDeviceEvent);
+        $this->assertSame($deviceUuid, $customerNewDeviceEvent->getDeviceUuid());
+        $this->assertSame($customerUuid, $customerNewDeviceEvent->getCustomerUuid());
+        $this->assertSame($expectedIdentityKey, $customerNewDeviceEvent->getIdentityKey());
     }
 }
