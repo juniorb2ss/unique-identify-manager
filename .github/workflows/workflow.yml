@@ -17,5 +17,5 @@ jobs:
     - name: Install composer dependencies
       run: composer install --prefer-dist
 
-    - name: Run PHPUnit
-      run: php7.3 vendor/bin/phpunit --exclude-group third-party
+    - name: Run Lint & Tests
+      run: composer run test
