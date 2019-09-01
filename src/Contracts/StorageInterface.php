@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace UniqueIdentityManager\Contracts;
 
-interface Storage
+interface StorageInterface
 {
     public function exists(string $key): bool;
 

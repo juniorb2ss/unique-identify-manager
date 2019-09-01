@@ -6,7 +6,7 @@ namespace UniqueIdentityManager;
 
 use League\Event\Emitter;
 use League\Event\EmitterInterface;
-use UniqueIdentityManager\Contracts\Storage;
+use UniqueIdentityManager\Contracts\StorageInterface;
 use UniqueIdentityManager\Events\CustomerNewDeviceEvent;
 use UniqueIdentityManager\Events\NewDeviceIdentityKeyEvent;
 use UniqueIdentityManager\Events\UpdateCustomerIdentityKeyEvent;
@@ -17,7 +17,7 @@ class Manager
     const CUSTOMER_KEY_IDENTIFICATION_NAME = 'customer:%s';
 
     /**
-     * @var Storage
+     * @var StorageInterface
      */
     private $storage;
 
@@ -32,7 +32,7 @@ class Manager
     private $emitter;
 
     public function __construct(
-        Storage $storage,
+        StorageInterface $storage,
         IdentityGenerator $identityGenerator = null,
         EmitterInterface $emitter = null
     ) {

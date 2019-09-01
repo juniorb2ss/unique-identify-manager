@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace UniqueIdentityManager\Tests\Unit;
 
 use Ramsey\Uuid\Uuid;
-use UniqueIdentityManager\Contracts\Storage;
+use UniqueIdentityManager\Contracts\StorageInterface;
 use UniqueIdentityManager\Events\CustomerNewDeviceEvent;
 use UniqueIdentityManager\Events\NewDeviceIdentityKeyEvent;
 use UniqueIdentityManager\Events\UpdateCustomerIdentityKeyEvent;
@@ -31,7 +31,7 @@ class ManagerTest extends TestCase
         /** @var IdentityGenerator $identityGenerator */
         $identityGenerator = $identityGenerator->reveal();
 
-        $storage = $this->prophesize(Storage::class);
+        $storage = $this->prophesize(StorageInterface::class);
         $storage
             ->get(
                 sprintf(
@@ -62,7 +62,7 @@ class ManagerTest extends TestCase
             )
             ->shouldBeCalled();
 
-        /** @var Storage $storage */
+        /** @var StorageInterface $storage */
         $storage = $storage->reveal();
 
         $manager = new Manager($storage, $identityGenerator, $this->emitter);
@@ -104,7 +104,7 @@ class ManagerTest extends TestCase
         /** @var IdentityGenerator $identityGenerator */
         $identityGenerator = $identityGenerator->reveal();
 
-        $storage = $this->prophesize(Storage::class);
+        $storage = $this->prophesize(StorageInterface::class);
         $storage
             ->get(
                 sprintf(
@@ -145,7 +145,7 @@ class ManagerTest extends TestCase
             )
             ->shouldBeCalled();
 
-        /** @var Storage $storage */
+        /** @var StorageInterface $storage */
         $storage = $storage->reveal();
 
         $manager = new Manager($storage, $identityGenerator, $this->emitter);
@@ -189,7 +189,7 @@ class ManagerTest extends TestCase
         /** @var IdentityGenerator $identityGenerator */
         $identityGenerator = $identityGenerator->reveal();
 
-        $storage = $this->prophesize(Storage::class);
+        $storage = $this->prophesize(StorageInterface::class);
         $storage
             ->get(
                 sprintf(
@@ -220,7 +220,7 @@ class ManagerTest extends TestCase
             )
             ->shouldBeCalled();
 
-        /** @var Storage $storage */
+        /** @var StorageInterface $storage */
         $storage = $storage->reveal();
 
         $manager = new Manager($storage, $identityGenerator, $this->emitter);
@@ -260,7 +260,7 @@ class ManagerTest extends TestCase
         /** @var IdentityGenerator $identityGenerator */
         $identityGenerator = $identityGenerator->reveal();
 
-        $storage = $this->prophesize(Storage::class);
+        $storage = $this->prophesize(StorageInterface::class);
         $storage
             ->get(
                 sprintf(
@@ -271,7 +271,7 @@ class ManagerTest extends TestCase
             ->shouldBeCalled()
             ->willReturn($expectedIdentityKey);
 
-        /** @var Storage $storage */
+        /** @var StorageInterface $storage */
         $storage = $storage->reveal();
 
         $manager = new Manager($storage, $identityGenerator, $this->emitter);

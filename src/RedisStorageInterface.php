@@ -5,10 +5,10 @@ declare(strict_types=1);
 namespace UniqueIdentityManager;
 
 use Predis\ClientInterface;
-use UniqueIdentityManager\Contracts\Storage;
+use UniqueIdentityManager\Contracts\StorageInterface;
 use UniqueIdentityManager\Exceptions\StorageKeyDoesNotExistsException;
 
-class RedisStorage implements Storage
+class RedisStorageInterface implements StorageInterface
 {
     /**
      * @var ClientInterface
