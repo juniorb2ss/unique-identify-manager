@@ -4,7 +4,11 @@ declare(strict_types=1);
 
 namespace UniqueIdentityManager;
 
+use League\Event\Emitter;
 use UniqueIdentityManager\Contracts\Storage;
+use UniqueIdentityManager\Events\CustomerNewDeviceEvent;
+use UniqueIdentityManager\Events\NewDeviceIdentityKeyEvent;
+use UniqueIdentityManager\Events\UpdateCustomerIdentityKey;
 
 class Manager
 {
@@ -21,10 +25,19 @@ class Manager
      */
     private $identityGenerator;
 
-    public function __construct(Storage $storage, IdentityGenerator $identityGenerator)
-    {
+    /**
+     * @var Emitter
+     */
+    private $emitter;
+
+    public function __construct(
+        Storage $storage,
+        IdentityGenerator $identityGenerator,
+        Emitter $emitter = null
+    ) {
         $this->storage = $storage;
         $this->identityGenerator = $identityGenerator;
+        $this->emitter = $emitter ?? new Emitter();
     }
 
     public function identify(string $deviceUuid, ?string $customerUuid = null): string
@@ -32,6 +45,14 @@ class Manager
         $identityKey = $this->getIdentityByCustomerUuid($customerUuid);
 
         if ($identityKey) {
+            $this->emitter->emit(
+                new CustomerNewDeviceEvent(
+                    $deviceUuid,
+                    $customerUuid,
+                    $identityKey
+                )
+            );
+
             return $identityKey;
         }
 
@@ -39,10 +60,23 @@ class Manager
 
         if (!$identityKey) {
             $identityKey = $this->createDeviceIdentityKey($deviceUuid);
+
+            $this->emitter->emit(
+                new NewDeviceIdentityKeyEvent(
+                    $identityKey
+                )
+            );
         }
 
         if ($customerUuid) {
             $this->updateCustomerIdentityKey($customerUuid, $identityKey);
+
+            $this->emitter->emit(
+                new UpdateCustomerIdentityKey(
+                    $customerUuid,
+                    $identityKey
+                )
+            );
         }
 
         return $identityKey;
