@@ -13,17 +13,28 @@ class NewDeviceIdentityKeyEvent extends AbstractEvent
     /**
      * @var string
      */
-    public $identityKey;
+    private $deviceUuid;
 
     /**
+     * @var string
+     */
+    private $identityKey;
+
+    /**w
      * @var array
      */
     private $customAttributes;
 
-    public function __construct(string $identityKey, array $customAttributes = [])
+    public function __construct(string $deviceUuid, string $identityKey, array $customAttributes = [])
     {
+        $this->deviceUuid = $deviceUuid;
         $this->identityKey = $identityKey;
         $this->customAttributes = $customAttributes;
+    }
+
+    public function getDeviceUuid(): string
+    {
+        return $this->deviceUuid;
     }
 
     public function getIdentityKey(): string

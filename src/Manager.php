@@ -4,12 +4,7 @@ declare(strict_types=1);
 
 namespace UniqueIdentityManager;
 
-use League\Event\Emitter;
-use League\Event\EmitterInterface;
 use UniqueIdentityManager\Contracts\StorageInterface;
-use UniqueIdentityManager\Events\CustomerNewDeviceEvent;
-use UniqueIdentityManager\Events\NewDeviceIdentityKeyEvent;
-use UniqueIdentityManager\Events\UpdateCustomerIdentityKeyEvent;
 
 class Manager
 {
@@ -27,18 +22,18 @@ class Manager
     private $identityGenerator;
 
     /**
-     * @var EmitterInterface
+     * @var EventHandler
      */
-    private $emitter;
+    private $eventHandler;
 
     public function __construct(
         StorageInterface $storage,
-        IdentityGenerator $identityGenerator = null,
-        EmitterInterface $emitter = null
+        EventHandler $eventHandler,
+        IdentityGenerator $identityGenerator = null
     ) {
         $this->storage = $storage;
+        $this->eventHandler = $eventHandler;
         $this->identityGenerator = $identityGenerator ?? new IdentityGenerator();
-        $this->emitter = $emitter ?? new Emitter();
     }
 
     public function identify(string $deviceUuid, ?string $customerUuid = null, array $customAttributes = []): string
@@ -46,13 +41,11 @@ class Manager
         $identityKey = $this->getIdentityByCustomerUuid($customerUuid);
 
         if ($identityKey) {
-            $this->emitter->emit(
-                new CustomerNewDeviceEvent(
-                    $deviceUuid,
-                    $customerUuid,
-                    $identityKey,
-                    $customAttributes
-                )
+            $this->eventHandler->customerNewDevice(
+                $deviceUuid,
+                $customerUuid,
+                $identityKey,
+                $customAttributes
             );
 
             return $identityKey;
@@ -63,23 +56,20 @@ class Manager
         if (!$identityKey) {
             $identityKey = $this->createDeviceIdentityKey($deviceUuid, $customAttributes);
 
-            $this->emitter->emit(
-                new NewDeviceIdentityKeyEvent(
-                    $identityKey,
-                    $customAttributes
-                )
+            $this->eventHandler->newDevice(
+                $deviceUuid,
+                $identityKey,
+                $customAttributes
             );
         }
 
         if ($customerUuid) {
             $this->updateCustomerIdentityKey($customerUuid, $identityKey, $customAttributes);
 
-            $this->emitter->emit(
-                new UpdateCustomerIdentityKeyEvent(
-                    $customerUuid,
-                    $identityKey,
-                    $customAttributes
-                )
+            $this->eventHandler->customerNewIdentityKey(
+                $customerUuid,
+                $identityKey,
+                $customAttributes
             );
         }
 

@@ -13,12 +13,12 @@ class UpdateCustomerIdentityKeyEvent extends AbstractEvent
     /**
      * @var string
      */
-    public $identityKey;
+    private $identityKey;
 
     /**
      * @var string
      */
-    public $customerUuid;
+    private $customerUuid;
 
     /**
      * @var array

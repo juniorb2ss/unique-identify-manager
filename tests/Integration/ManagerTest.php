@@ -42,7 +42,7 @@ class ManagerTest extends TestCase
         $identityGenerator = $identityGenerator->reveal();
 
         $storage = new RedisStorage($this->redis);
-        $manager = new Manager($storage, $identityGenerator);
+        $manager = new Manager($storage, $this->eventHandler, $identityGenerator);
 
         // Cenario
         // Não existe customerUuuid ainda, pois é um visitante, e o device não contém identificador unico ainda
@@ -71,7 +71,7 @@ class ManagerTest extends TestCase
         $identityGenerator = $identityGenerator->reveal();
 
         $storage = new RedisStorage($this->redis);
-        $manager = new Manager($storage, $identityGenerator);
+        $manager = new Manager($storage, $this->eventHandler, $identityGenerator);
 
         // Cenario:
         // o device e o customer nao possuem nenhum identificador unico antes criado
@@ -103,7 +103,7 @@ class ManagerTest extends TestCase
             );
 
         $storage = new RedisStorage($redis);
-        $manager = new Manager($storage);
+        $manager = new Manager($storage, $this->eventHandler);
 
         // Cenario:
         // O device já possui um identificador, e o customer criou uma conta nova
@@ -137,7 +137,7 @@ class ManagerTest extends TestCase
             );
 
         $storage = new RedisStorage($redis);
-        $manager = new Manager($storage);
+        $manager = new Manager($storage, $this->eventHandler);
 
         // Cenário:
         // Customer já contém outro identificador, possívelmente de outro computador
