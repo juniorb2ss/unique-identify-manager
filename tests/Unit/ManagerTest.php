@@ -65,7 +65,7 @@ class ManagerTest extends TestCase
         /** @var StorageInterface $storage */
         $storage = $storage->reveal();
 
-        $manager = new Manager($storage, $identityGenerator, $this->emitter);
+        $manager = new Manager($storage, $this->eventHandler, $identityGenerator);
 
         // Cenario
         // Não existe customerUuuid ainda, pois é um visitante, e o device não contém identificador unico ainda
@@ -89,6 +89,7 @@ class ManagerTest extends TestCase
         $this->assertInstanceOf(NewDeviceIdentityKeyEvent::class, $newDeviceIdentityKeyEvent);
         $this->assertSame($newDeviceIdentityKeyEvent->getIdentityKey(), (string) $identityGenerator->generate());
         $this->assertSame($customAttributes, $newDeviceIdentityKeyEvent->getCustomAttributes());
+        $this->assertSame($deviceUuid, $newDeviceIdentityKeyEvent->getDeviceUuid());
     }
 
     public function testGeneratingIdentityKeyWithCustomerUuidButCustomerDoesNotHaveIdentityKey(): void
@@ -150,7 +151,7 @@ class ManagerTest extends TestCase
         /** @var StorageInterface $storage */
         $storage = $storage->reveal();
 
-        $manager = new Manager($storage, $identityGenerator, $this->emitter);
+        $manager = new Manager($storage, $this->eventHandler, $identityGenerator);
 
         // Cenario:
         // o device e o customer nao possuem nenhum identificador unico antes criado
@@ -177,6 +178,7 @@ class ManagerTest extends TestCase
         $this->assertInstanceOf(NewDeviceIdentityKeyEvent::class, $newDeviceIdentityKeyEvent);
         $this->assertSame($newDeviceIdentityKeyEvent->getIdentityKey(), (string) $identityGenerator->generate());
         $this->assertEmpty($newDeviceIdentityKeyEvent->getCustomAttributes());
+        $this->assertSame($deviceUuid, $newDeviceIdentityKeyEvent->getDeviceUuid());
 
         $this->assertInstanceOf(UpdateCustomerIdentityKeyEvent::class, $updateCustomerIdentityKeyEvent);
         $this->assertSame($customerUuid, $updateCustomerIdentityKeyEvent->getCustomerUuid());
@@ -229,7 +231,7 @@ class ManagerTest extends TestCase
         /** @var StorageInterface $storage */
         $storage = $storage->reveal();
 
-        $manager = new Manager($storage, $identityGenerator, $this->emitter);
+        $manager = new Manager($storage, $this->eventHandler, $identityGenerator);
 
         // Cenario:
         // O device já possui um identificador, e o customer criou uma conta nova
@@ -283,7 +285,7 @@ class ManagerTest extends TestCase
         /** @var StorageInterface $storage */
         $storage = $storage->reveal();
 
-        $manager = new Manager($storage, $identityGenerator, $this->emitter);
+        $manager = new Manager($storage, $this->eventHandler, $identityGenerator);
 
         // Cenário:
         // Customer já contém outro identificador, possívelmente de outro computador
